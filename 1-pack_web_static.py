@@ -16,6 +16,7 @@ def do_pack():
         f_path = f"versions/web_static_{time_string}.tgz"
         f_size = os.path.getsize(f_path)
         print(f"web_static packed: {f_path} -> {f_size}")
+        return (f_path)
     except CommandFailed:
         return None
 
