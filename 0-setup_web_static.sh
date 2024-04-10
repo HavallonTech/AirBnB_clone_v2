@@ -12,11 +12,18 @@ else
     sudo apt-get  install -y nginx
 fi
 # make the required directory
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
+sudo mkdir -p data/web_static/releases/test
+sudo mkdir -p data/web_static/shared
 
 #creating a fake html file
-echo "<html><head></head><body>Holberton School</body></html>" | sudo tee /data/web_static/releases/test/index.html
+echo "
+<html>
+ <head>
+ </head>
+ <body>
+     Holberton School
+ </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
 # creating a symbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
@@ -25,9 +32,8 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 #updating nginx configurations
-sudo sed -i 's|^.*server_name.*$|&\n\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n|' /etc/nginx/sites-available/default
+sudo sed -i '/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
 
 # Restarting Nginx
 sudo service nginx restart
-
 exit 0
