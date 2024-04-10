@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-"""
-a Bash script that sets up your web servers for the deployment of web_static
-"""
+#a Bash script that sets up your web servers for the deployment of web_static
 
 
 # check if nginx is installed
@@ -21,7 +19,7 @@ sudo mkdir -p /data/web_static/shared/
 echo "<html><head></head><body>Holberton School</body></html>" | sudo tee /data/web_static/releases/test/index.html
 
 # creating a symbolic link
-ln -s /data/web_static/releases/test/ /data/web_static/current
+sudo ln -s /data/web_static/releases/test/ /data/web_static/current
 
 #changing of ownership
 sudo chown -R ubuntu:ubuntu /data/
