@@ -23,6 +23,3 @@ def do_pack():
         return (f_path)
     except CommandFailed:
         return None
-
-
-do_pack()
