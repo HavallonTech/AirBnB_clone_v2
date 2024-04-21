@@ -42,6 +42,14 @@ def python_and_text(text):
     return f"Python {text_formatted}"
 
 
+@app.route('/number/<int:n>', strict_slashes=False)
+def is_number(n):
+    """
+    Display 'the value of N only if N is a number
+    """
+    return f"{n} is a number"
+
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """
