@@ -30,7 +30,7 @@ def do_pack():
         return None
 
 
-def do_deploy_none(archive_path):
+def do_deploy(archive_path):
     """distributes an archive to a web servers"""
     if exists(archive_path) is False:
         return False
