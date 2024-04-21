@@ -32,7 +32,8 @@ def c_and_text(text):
 
 
 @app.route('/python/<text>', strict_slashes=False)
-def python_and_text(text='is cool'):
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
+def python_and_text(text):
     """
     Display 'C followed by the text passed as variable'
     Replace underscore with the text variable
