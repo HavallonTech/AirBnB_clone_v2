@@ -1,21 +1,35 @@
 #!/usr/bin/env python3
 """
+<<<<<<< HEAD
 Fabric script to genereate tgz archive
 execute: fab -f 1-pack_web_static.py do_pack
+=======
+Fabric script to generate tgz archive
+execute: fab -f 1-pack_web_static.py do_pack
+fab -f 3-deploy_web_static.py deploy -i ~/.ssh/school -u ubuntu
+>>>>>>> 40ac49b77f890c39e1bf1b30c9d2078231334781
 """
 
 from datetime import datetime
 from fabric.api import *
 import os
+<<<<<<< HEAD
 import exists
 env.hosts = ['52.91.147.146', '3.85.16.39']
 
+=======
+from os.path import exists
+env.hosts = ['52.91.147.146', '3.85.16.39']
+env.user = "ubuntu"
+env.key_filename = '~/.ssh/school'
+>>>>>>> 40ac49b77f890c39e1bf1b30c9d2078231334781
 
 def do_pack():
     """
     making an archive on web_static folder
     """
 
+<<<<<<< HEAD
     try
      time = datetime.now()
       archive = 'web_static_' + time.strftime("%Y%m%d%H%M%S") + '.' + 'tgz'
@@ -26,6 +40,16 @@ def do_pack():
             return archive
         else:
             return None
+=======
+    try:
+        time = datetime.now()
+        the_archive = 'web_static_' + time.strftime("%Y%m%d%H%M%S") + '.' + 'tgz'
+        if os.path.isdir("version") is False:
+            local('mkdir -p versions')
+        create = local(f'tar -cvzf versions/{the_archive} web_static')
+        if create is not None:
+            return archive
+>>>>>>> 40ac49b77f890c39e1bf1b30c9d2078231334781
     except:
         return None
 
@@ -50,9 +74,64 @@ def do_deploy(archive_path):
     except:
         return False
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 40ac49b77f890c39e1bf1b30c9d2078231334781
 def deploy():
     """creates and distributes an archive to the web servers"""
     archive_path = do_pack()
     if archive_path is None:
         return False
     return do_deploy(archive_path)
+<<<<<<< HEAD
+=======
+def do_deploy():
+    if os.path.exists(archive_path) is False:
+        print("Warning no file to compress")
+        return False
+
+    # Get the name
+    new_path = archive_path.split("/")[-1]
+    # Get the name of the archive without extension
+    folder = new_path.split('.')[0]
+
+    # upload the archive
+    if put(archive_path, "/tmp/{}".
+            format(new_path)).failed is True:
+        return False
+    # Creating the right path
+    if run("rm -rf /data/web_static/releases/{}/".
+            format(folder)).failed is True:
+        return False
+    if run("mkdir -p /data/web_static/releases/{}/".
+            format(folder)).failed is True:
+        return False
+    # uncompress
+    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
+            format(new_path, folder)).failed is True:
+        return False
+    # remove the archive
+    if run("rm  /tmp/{}".format(new_path)).failed is True:
+        return False
+    # move the content of web_static from uncompress folder
+    if run("mv /data/web_static/releases/{}/web_static/*\
+            /data/web_static/releases/{}".
+            format(folder, folder)).failed is True:
+        return False
+
+    # delete the symbolic link
+    if run("rm -rf /data/web_static/current").failed is True:
+        return False
+    # Remove content of web_static from uncompress folder
+    if run("rm -rf /data/web_static/releases/{}/web_static".
+            format(folder)).failed is True:
+        return False
+    # create a new symoblic link
+    if run("ln -sf /data/web_static/releases/{} /data/web_static/current".
+            format(folder)).failed is True:
+        return False
+
+    print("New version deployed!")
+    return True
+>>>>>>> 40ac49b77f890c39e1bf1b30c9d2078231334781
